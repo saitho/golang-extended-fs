@@ -22,4 +22,5 @@ type HandlerFunc interface {
 	WriteFile(filePath string, fileContent string) error
 	AppendToFile(filePath string, fileContent string) error
 	ReadFile(filePath string) (string, error)
+	Chown(filePath string, userId int, groupId int) error
 }

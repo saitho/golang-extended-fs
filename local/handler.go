@@ -1,6 +1,7 @@
 package local
 
 import (
+	"os"
 	"strings"
 
 	"github.com/saitho/golang-extended-fs/core"
@@ -26,4 +27,9 @@ func (p ProtocolHandler) CanHandle(filePath string) bool {
 
 func (p ProtocolHandler) ResolveFilePath(filePath string) string {
 	return filePath
+}
+
+func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) error {
+	remotePath := p.ResolveFilePath(directoryPath)
+	return os.Chown(remotePath, userId, groupId)
 }

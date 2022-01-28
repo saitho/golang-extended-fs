@@ -28,3 +28,13 @@ func (p ProtocolHandler) ResolveFilePath(filePath string) string {
 	}
 	return filePath[6:] // ssh://
 }
+
+func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) error {
+	remotePath := p.ResolveFilePath(directoryPath)
+	client, err := getRemoteClient()
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	return client.Chown(remotePath, userId, groupId)
+}

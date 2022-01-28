@@ -2,46 +2,8 @@ package extended_fs
 
 import (
 	"fmt"
-	"os"
 	"strings"
-
-	"github.com/saitho/golang-extended-fs/core"
-	"github.com/saitho/golang-extended-fs/local"
-	"github.com/saitho/golang-extended-fs/pkger"
-	"github.com/saitho/golang-extended-fs/sftp"
 )
-
-var Handlers = []core.HandlerFunc{
-	local.ProtocolHandler{},
-	sftp.ProtocolHandler{},
-	pkger.ProtocolHandler{},
-}
-
-// ListFolders will list all folders within a given folder
-func ListFolders(rootPath string) ([]os.FileInfo, error) {
-	for _, handler := range Handlers {
-		if handler.CanHandle(rootPath) {
-			if !handler.AllowRead() {
-				return []os.FileInfo{}, fmt.Errorf("reading is not allowed")
-			}
-			return handler.ListDirectories(rootPath)
-		}
-	}
-	return []os.FileInfo{}, fmt.Errorf("unable to handle ListFolders")
-}
-
-// CreateFolder will create a new folder
-func CreateFolder(folderPath string) error {
-	for _, handler := range Handlers {
-		if handler.CanHandle(folderPath) {
-			if !handler.AllowWrite() {
-				return fmt.Errorf("writing is not allowed")
-			}
-			return handler.CreateDirectory(folderPath)
-		}
-	}
-	return fmt.Errorf("unable to handle CreateDirectory")
-}
 
 // WriteFile will write a file content to a new file or override an existing one
 func WriteFile(filePath string, fileContent string) error {

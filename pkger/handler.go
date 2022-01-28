@@ -1,6 +1,7 @@
 package pkger
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/saitho/golang-extended-fs/core"
@@ -25,4 +26,8 @@ func (p ProtocolHandler) CanHandle(filePath string) bool {
 
 func (p ProtocolHandler) ResolveFilePath(filePath string) string {
 	return filePath[9:]
+}
+
+func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) error {
+	return fmt.Errorf("not supported")
 }

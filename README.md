@@ -38,6 +38,17 @@ import (
   "github.com/saitho/golang-extended-fs/sftp"
 )
 sftp.Config.SshHost = "192.168.2.105"
+extended_fs.WriteFile("ssh:///var/www/html/index.html", "<h1>Hello World</h1>")
+```
+
+```golang
+import (
+  "github.com/saitho/golang-extended-fs"
+  "github.com/saitho/golang-extended-fs/sftp"
+)
+sftp.Config.SshHost = "192.168.2.105"
+sftp.Config.LoadLocalSigners = false // do not load local SSH private keys
 sftp.Config.SshIdentity = "/path/to/my/private_key.pem"
 extended_fs.WriteFile("ssh:///var/www/html/index.html", "<h1>Hello World</h1>")
+extended_fs.Chown("ssh:///var/www/html/index.html", 1001, 1001) // set user and group with id 1001 as owner
 ```

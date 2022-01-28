@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-
 type FileOperation int
+
 const (
 	FileCreate FileOperation = iota
 )
@@ -18,7 +18,7 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 		return err
 	}
 	defer client.Close()
-	file, err := client.OpenFile(remotePath, os.O_CREATE|os.O_RDWR)
+	file, err := client.OpenFile(remotePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC)
 	if err != nil {
 		return err
 	}

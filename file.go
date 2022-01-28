@@ -58,15 +58,6 @@ func WriteFile(filePath string, fileContent string) error {
 
 // AppendToFile will append file content to an existing one
 func AppendToFile(filePath string, fileContent string, onlyIfMissing bool) error {
-	for _, handler := range Handlers {
-		if handler.CanHandle(filePath) {
-			if !handler.AllowWrite() {
-				return fmt.Errorf("writing is not allowed")
-			}
-			return handler.AppendToFile(filePath, fileContent)
-		}
-	}
-
 	if onlyIfMissing {
 		content, err := ReadFile(filePath)
 		if err != nil {
@@ -74,6 +65,15 @@ func AppendToFile(filePath string, fileContent string, onlyIfMissing bool) error
 		}
 		if strings.Contains(content, fileContent) {
 			return nil
+		}
+	}
+
+	for _, handler := range Handlers {
+		if handler.CanHandle(filePath) {
+			if !handler.AllowWrite() {
+				return fmt.Errorf("writing is not allowed")
+			}
+			return handler.AppendToFile(filePath, fileContent)
 		}
 	}
 

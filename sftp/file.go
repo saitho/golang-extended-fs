@@ -37,7 +37,8 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	return nil
 }
 
-func (p ProtocolHandler) AppendToFile(remotePath string, fileContent string) error {
+func (p ProtocolHandler) AppendToFile(filePath string, fileContent string) error {
+	remotePath := p.ResolveFilePath(filePath)
 	client, err := getRemoteClient()
 	if err != nil {
 		return err

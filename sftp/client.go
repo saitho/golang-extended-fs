@@ -1,12 +1,9 @@
 package sftp
 
 import (
-	"bytes"
 	"fmt"
 	"net"
 	"os"
-	"os/exec"
-	"strings"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -78,25 +75,4 @@ func getRemoteClient() (*sftp.Client, error) {
 	}
 
 	return sftp.NewClient(conn, sftp.MaxPacket(SIZE))
-}
-
-func RemoteRun(cmd string, args ...string) (bytes.Buffer, bytes.Buffer, error) {
-	remoteCmd := fmt.Sprintf("%s %s", cmd, strings.Join(args, " "))
-	if Config.Logger != nil {
-		(*Config.Logger).Debug(fmt.Sprintf("SSH [%s@%s]: %s", Config.SshUsername, Config.SshHost, remoteCmd))
-	}
-
-	var cmdArgs []string
-	if Config.SshIdentity != "" {
-		cmdArgs = []string{"-i", Config.SshIdentity}
-	}
-
-	cmdArgs = append(cmdArgs, fmt.Sprintf("%s@%s", Config.SshUsername, Config.SshHost))
-	cmdArgs = append(cmdArgs, remoteCmd)
-	command := exec.Command("ssh", cmdArgs...)
-	var out, outErr bytes.Buffer
-	command.Stdout = &out
-	command.Stderr = &outErr
-	err := command.Run()
-	return out, outErr, err
 }

@@ -18,6 +18,7 @@ type ClientConfigHook interface {
 }
 
 var clientConfigHooks []ClientConfigHook
+
 func RegisterClientConfigHook(hookFunc ClientConfigHook) {
 	clientConfigHooks = append(clientConfigHooks, hookFunc)
 }
@@ -38,6 +39,16 @@ func getRemoteSshAuths() ([]ssh.AuthMethod, error) {
 				}
 			} else {
 				signers = append(signers, localSigners...)
+			}
+		}
+	}
+
+	if Config.SshIdentity != "" {
+		dat, err := os.ReadFile(Config.SshIdentity)
+		if err == nil {
+			signer, err := ssh.ParsePrivateKey(dat)
+			if err == nil {
+				signers = append(signers, signer)
 			}
 		}
 	}

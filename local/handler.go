@@ -21,7 +21,7 @@ func (p ProtocolHandler) GetType() core.TargetType {
 }
 
 func (p ProtocolHandler) CanHandle(filePath string) bool {
-	return strings.Contains(filePath, "://")
+	return !strings.Contains(filePath, "://")
 }
 
 func (p ProtocolHandler) ResolveFilePath(filePath string) string {

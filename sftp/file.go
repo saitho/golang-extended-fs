@@ -27,9 +27,11 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	if _, err := file.Write([]byte(fileContent)); err != nil {
 		return err
 	}
-	for _, hook := range Config.Hooks.PostFileOperationHooks {
-		if err := hook.Execute(FileCreate, remotePath, client, file); err != nil {
-			return err
+	if Config.Hooks != nil && Config.Hooks.PostFileOperationHooks != nil {
+		for _, hook := range Config.Hooks.PostFileOperationHooks {
+			if err := hook.Execute(FileCreate, remotePath, client, file); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

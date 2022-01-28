@@ -6,8 +6,9 @@ import (
 )
 
 type DirectoryOperation int
+
 const (
-	DirList DirectoryOperation = iota
+	DirList   DirectoryOperation = iota
 	DirCreate DirectoryOperation = 1
 )
 
@@ -23,9 +24,11 @@ func (p ProtocolHandler) ListDirectories(rootPath string) ([]os.FileInfo, error)
 	if err != nil {
 		return dirs, err
 	}
-	for _, hook := range Config.Hooks.PostDirectoryOperationHooks {
-		if err := hook.Execute(DirList, remotePath, client, files); err != nil {
-			return files, err
+	if Config.Hooks != nil && Config.Hooks.PostDirectoryOperationHooks != nil {
+		for _, hook := range Config.Hooks.PostDirectoryOperationHooks {
+			if err := hook.Execute(DirList, remotePath, client, files); err != nil {
+				return files, err
+			}
 		}
 	}
 	return files, nil
@@ -45,9 +48,11 @@ func (p ProtocolHandler) CreateDirectory(directoryPath string) error {
 		return err
 	}
 
-	for _, hook := range Config.Hooks.PostDirectoryOperationHooks {
-		if err := hook.Execute(DirCreate, remotePath, client, nil); err != nil {
-			return err
+	if Config.Hooks != nil && Config.Hooks.PostDirectoryOperationHooks != nil {
+		for _, hook := range Config.Hooks.PostDirectoryOperationHooks {
+			if err := hook.Execute(DirCreate, remotePath, client, nil); err != nil {
+				return err
+			}
 		}
 	}
 

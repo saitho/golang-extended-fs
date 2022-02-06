@@ -36,5 +36,9 @@ func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) er
 		return err
 	}
 	defer client.Close()
-	return client.Chown(remotePath, userId, groupId)
+	if err := client.Chown(remotePath, userId, groupId); err != nil {
+		LogError("Unable to chown file or directory at path \"" + remotePath + "\": " + err.Error())
+		return err
+	}
+	return nil
 }

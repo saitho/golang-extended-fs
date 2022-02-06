@@ -15,28 +15,28 @@ type PostFileOperationHook interface {
 
 type HooksStruct struct {
 	PostDirectoryOperationHooks []PostDirectoryOperationHook
-	PostFileOperationHooks []PostFileOperationHook
+	PostFileOperationHooks      []PostFileOperationHook
 }
 
 type ConfigStruct struct {
-	Logger *logger.Wrapper
-	Hooks *HooksStruct
+	Logger logger.Wrapper
+	Hooks  *HooksStruct
 
-	SshHost string
-	SshPort int
-	SshUsername string
-	SshIdentity string
-	Signers []ssh.Signer
-	LoadLocalSigners bool
+	SshHost                     string
+	SshPort                     int
+	SshUsername                 string
+	SshIdentity                 string
+	Signers                     []ssh.Signer
+	LoadLocalSigners            bool
 	AbortOnErrorsInLocalSigners bool
 }
 
 var Config = ConfigStruct{
-	SshHost: "",
-	SshPort: 22,
-	SshUsername: "root",
-	SshIdentity: "",
-	Signers: []ssh.Signer{},
-	LoadLocalSigners: true,
+	SshHost:                     "",
+	SshPort:                     22,
+	SshUsername:                 "root",
+	SshIdentity:                 "",
+	Signers:                     []ssh.Signer{},
+	LoadLocalSigners:            true,
 	AbortOnErrorsInLocalSigners: false,
 }

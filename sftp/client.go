@@ -57,6 +57,7 @@ func getRemoteSshAuths() ([]ssh.AuthMethod, error) {
 func getRemoteClient() (*sftp.Client, error) {
 	auths, err := getRemoteSshAuths()
 	if err != nil {
+		LogError("Unable to get remote ssh auths: " + err.Error())
 		return nil, err
 	}
 
@@ -71,6 +72,7 @@ func getRemoteClient() (*sftp.Client, error) {
 
 	conn, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort), clientConfig)
 	if err != nil {
+		LogError("Unable to connect to host " + fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort) + ": " + err.Error())
 		return nil, err
 	}
 

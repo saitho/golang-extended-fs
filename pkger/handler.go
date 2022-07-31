@@ -16,6 +16,9 @@ func (p ProtocolHandler) AllowRead() bool {
 func (p ProtocolHandler) AllowWrite() bool {
 	return false
 }
+func (p ProtocolHandler) AllowDelete() bool {
+	return false
+}
 
 func (p ProtocolHandler) GetType() core.TargetType {
 	return core.Pkging

@@ -25,6 +25,10 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	return fmt.Errorf("not supported")
 }
 
+func (p ProtocolHandler) DeleteFile(filePath string) error {
+	return fmt.Errorf("not supported")
+}
+
 func (p ProtocolHandler) AppendToFile(filePath string, fileContent string) error {
 	return fmt.Errorf("not supported")
 }

@@ -39,3 +39,8 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 
 	return string(dat), nil
 }
+
+func (p ProtocolHandler) DeleteFile(filePath string) error {
+	localPath := p.ResolveFilePath(filePath)
+	return os.Remove(localPath)
+}

@@ -30,3 +30,26 @@ func CreateFolder(folderPath string) error {
 	}
 	return fmt.Errorf("unable to handle CreateDirectory")
 }
+
+// DeleteFolder will delete an existing folder
+func DeleteFolder(folderPath string, force bool) error {
+	for _, handler := range Handlers {
+		if handler.CanHandle(folderPath) {
+			if !handler.AllowDelete() {
+				return fmt.Errorf("deleting is not allowed")
+			}
+			return handler.DeleteDirectory(folderPath, force)
+		}
+	}
+	return fmt.Errorf("unable to handle DeleteFolder")
+}
+
+// HasFolder will return true if a folder exists
+func HasFolder(folderPath string) (bool, error) {
+	for _, handler := range Handlers {
+		if handler.CanHandle(folderPath) {
+			return handler.HasDirectory(folderPath)
+		}
+	}
+	return false, fmt.Errorf("unable to handle HasFolder")
+}

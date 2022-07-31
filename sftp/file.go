@@ -87,3 +87,13 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 	}
 	return buf.String(), nil
 }
+
+func (p ProtocolHandler) DeleteFile(filePath string) error {
+	remotePath := p.ResolveFilePath(filePath)
+	client, err := getRemoteClient()
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	return client.Remove(remotePath)
+}

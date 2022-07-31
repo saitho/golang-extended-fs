@@ -54,3 +54,28 @@ func ReadFile(filePath string) (string, error) {
 	}
 	return "", fmt.Errorf("unable to handle ReadFile")
 }
+
+// DeleteFile will delete the given file
+func DeleteFile(filePath string) error {
+	for _, handler := range Handlers {
+		if handler.CanHandle(filePath) {
+			if !handler.AllowDelete() {
+				return fmt.Errorf("deleting is not allowed")
+			}
+			return handler.DeleteFile(filePath)
+		}
+	}
+	return fmt.Errorf("unable to handle DeleteFile")
+}
+
+// CopyFile will read all contents of a given file and write it to another location
+func CopyFile(srcPath string, destPath string) error {
+	content, err := ReadFile(srcPath)
+	if err != nil {
+		return fmt.Errorf("unable to read source file")
+	}
+	if err := WriteFile(destPath, content); err != nil {
+		return fmt.Errorf("unable to write to source file")
+	}
+	return nil
+}

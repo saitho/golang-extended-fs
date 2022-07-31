@@ -37,6 +37,14 @@ func main() {
 	if err := xfs.WriteFile(remoteTestFolder+"/test.txt", "Text"); err != nil {
 		panic(err.Error())
 	}
+	// HAS FILE
+	hasFile, err := xfs.HasFile(remoteTestFolder + "/test.txt")
+	if err != nil {
+		panic(err.Error())
+	}
+	if !hasFile {
+		panic("HasFile failed. expected true.")
+	}
 	// READ FILE
 	content, err := xfs.ReadFile(remoteTestFolder + "/test.txt")
 	if err != nil {

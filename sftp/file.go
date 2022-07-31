@@ -88,6 +88,17 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 	return buf.String(), nil
 }
 
+func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
+	remotePath := p.ResolveFilePath(filePath)
+	client, err := getRemoteClient()
+	if err != nil {
+		return false, err
+	}
+	defer client.Close()
+	file, err := client.Stat(remotePath)
+	return file != nil, err
+}
+
 func (p ProtocolHandler) DeleteFile(filePath string) error {
 	remotePath := p.ResolveFilePath(filePath)
 	client, err := getRemoteClient()

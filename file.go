@@ -68,6 +68,16 @@ func DeleteFile(filePath string) error {
 	return fmt.Errorf("unable to handle DeleteFile")
 }
 
+// HasFile will return true if file exists
+func HasFile(filePath string) (bool, error) {
+	for _, handler := range Handlers {
+		if handler.CanHandle(filePath) {
+			return handler.HasFile(filePath)
+		}
+	}
+	return false, fmt.Errorf("unable to handle HasFile")
+}
+
 // CopyFile will read all contents of a given file and write it to another location
 func CopyFile(srcPath string, destPath string) error {
 	content, err := ReadFile(srcPath)

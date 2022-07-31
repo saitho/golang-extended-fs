@@ -44,3 +44,9 @@ func (p ProtocolHandler) DeleteFile(filePath string) error {
 	localPath := p.ResolveFilePath(filePath)
 	return os.Remove(localPath)
 }
+
+func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
+	localPath := p.ResolveFilePath(filePath)
+	info, err := os.Stat(localPath)
+	return info != nil, err
+}

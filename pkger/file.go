@@ -21,6 +21,17 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 	return string(sl), nil
 }
 
+func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
+	packagedPath := p.ResolveFilePath(filePath)
+	var f pkging.File
+	f, err := pkger.Open(packagedPath)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+	return f != nil, err
+}
+
 func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	return fmt.Errorf("not supported")
 }

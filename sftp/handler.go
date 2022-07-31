@@ -1,6 +1,7 @@
 package sftp
 
 import (
+	"os"
 	"strings"
 
 	"github.com/saitho/golang-extended-fs/core"
@@ -41,6 +42,20 @@ func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) er
 	defer client.Close()
 	if err := client.Chown(remotePath, userId, groupId); err != nil {
 		LogError("Unable to chown file or directory at path \"" + remotePath + "\": " + err.Error())
+		return err
+	}
+	return nil
+}
+
+func (p ProtocolHandler) Chmod(directoryPath string, fileMode os.FileMode) error {
+	remotePath := p.ResolveFilePath(directoryPath)
+	client, err := getRemoteClient()
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	if err := client.Chmod(remotePath, fileMode); err != nil {
+		LogError("Unable to chmod file or directory at path \"" + remotePath + "\": " + err.Error())
 		return err
 	}
 	return nil

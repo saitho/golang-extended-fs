@@ -2,6 +2,7 @@ package pkger
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/saitho/golang-extended-fs/core"
@@ -32,5 +33,9 @@ func (p ProtocolHandler) ResolveFilePath(filePath string) string {
 }
 
 func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) error {
+	return fmt.Errorf("not supported")
+}
+
+func (p ProtocolHandler) Chmod(directoryPath string, fileMode os.FileMode) error {
 	return fmt.Errorf("not supported")
 }

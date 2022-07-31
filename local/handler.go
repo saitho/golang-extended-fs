@@ -36,3 +36,8 @@ func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) er
 	remotePath := p.ResolveFilePath(directoryPath)
 	return os.Chown(remotePath, userId, groupId)
 }
+
+func (p ProtocolHandler) Chmod(directoryPath string, fileMode os.FileMode) error {
+	remotePath := p.ResolveFilePath(directoryPath)
+	return os.Chmod(remotePath, fileMode)
+}

@@ -30,4 +30,5 @@ type HandlerFunc interface {
 	ReadFile(filePath string) (string, error)
 
 	Chown(filePath string, userId int, groupId int) error
+	Chmod(filePath string, fileMode os.FileMode) error
 }

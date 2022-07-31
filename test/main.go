@@ -72,6 +72,10 @@ func main() {
 	if err := xfs.CopyFile("./README.md", remoteTestFolder+"/README.md"); err != nil {
 		panic(err.Error())
 	}
+	// CHMOD FILE
+	if err := xfs.Chmod(remoteTestFolder+"/README.md", 0777); err != nil {
+		panic(err.Error())
+	}
 	// READ FILE
 	content, err = xfs.ReadFile(remoteTestFolder + "/README.md")
 	if err != nil {

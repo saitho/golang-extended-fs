@@ -33,6 +33,7 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 		return err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "OPEN "+remotePath))
 	file, err := client.OpenFile(remotePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC)
 	if err != nil {
 		LogError("Unable to open file at path \"" + remotePath + "\": " + err.Error())
@@ -40,6 +41,7 @@ func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	}
 	defer file.Close()
 
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "WRITE "+remotePath))
 	if _, err := file.Write([]byte(fileContent)); err != nil {
 		LogError("Unable to write file at path \"" + remotePath + "\": " + err.Error())
 		return err
@@ -54,12 +56,14 @@ func (p ProtocolHandler) AppendToFile(filePath string, fileContent string) error
 		return err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "OPEN "+remotePath))
 	file, err := client.OpenFile(remotePath, os.O_WRONLY|os.O_APPEND)
 	if err != nil {
 		LogError("Unable to open file at path \"" + remotePath + "\": " + err.Error())
 		return err
 	}
 	defer file.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "WRITE "+remotePath))
 	if _, err := file.Write([]byte(fileContent)); err != nil {
 		LogError("Unable to write file at path \"" + remotePath + "\": " + err.Error())
 		return err
@@ -74,6 +78,7 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 		return "", err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "OPEN "+remotePath))
 	file, err := client.OpenFile(remotePath, os.O_RDONLY)
 	if err != nil {
 		LogError("Unable to open file at path \"" + remotePath + "\": " + err.Error())
@@ -81,6 +86,7 @@ func (p ProtocolHandler) ReadFile(filePath string) (string, error) {
 	}
 	defer file.Close()
 	buf := new(bytes.Buffer)
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "READ "+remotePath))
 	if _, err := buf.ReadFrom(file); err != nil {
 		LogError("Unable to read file at path \"" + remotePath + "\": " + err.Error())
 		return "", err
@@ -95,6 +101,7 @@ func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
 		return false, err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "STAT "+remotePath))
 	file, err := client.Stat(remotePath)
 	return file != nil, err
 }
@@ -106,5 +113,6 @@ func (p ProtocolHandler) DeleteFile(filePath string) error {
 		return err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "REMOVE "+remotePath))
 	return client.Remove(remotePath)
 }

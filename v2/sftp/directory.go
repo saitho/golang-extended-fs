@@ -34,6 +34,7 @@ func (p ProtocolHandler) ListDirectories(rootPath string) ([]os.FileInfo, error)
 		return dirs, err
 	}
 	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "READ "+remotePath))
 	files, err := client.ReadDir(remotePath)
 	if err != nil {
 		LogError("Unable to open directory at path \"" + remotePath + "\": " + err.Error())

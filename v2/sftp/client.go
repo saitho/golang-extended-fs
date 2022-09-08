@@ -70,7 +70,9 @@ func getRemoteClient() (*sftp.Client, error) {
 		clientConfig = hook.CreateClientConfig(clientConfig)
 	}
 
-	conn, err := ssh.Dial("tcp", fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort), clientConfig)
+	addr := fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort)
+	LogDebug("Dialing " + addr + " with user " + Config.SshUsername)
+	conn, err := ssh.Dial("tcp", addr, clientConfig)
 	if err != nil {
 		LogError("Unable to connect to host " + fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort) + ": " + err.Error())
 		return nil, err

@@ -2,6 +2,7 @@ package sftp
 
 import (
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/saitho/golang-extended-fs/v2/core"
@@ -40,6 +41,7 @@ func (p ProtocolHandler) Chown(directoryPath string, userId int, groupId int) er
 		return err
 	}
 	defer client.Close()
+	LogDebug("Changing owner of \"" + remotePath + "\" to user \"" + strconv.Itoa(userId) + "\" and group \"" + strconv.Itoa(groupId) + "\"")
 	if err := client.Chown(remotePath, userId, groupId); err != nil {
 		LogError("Unable to chown file or directory at path \"" + remotePath + "\": " + err.Error())
 		return err
@@ -54,6 +56,7 @@ func (p ProtocolHandler) Chmod(directoryPath string, fileMode os.FileMode) error
 		return err
 	}
 	defer client.Close()
+	LogDebug("Changing mode of \"" + remotePath + "\" to \"" + fileMode.String() + "\"")
 	if err := client.Chmod(remotePath, fileMode); err != nil {
 		LogError("Unable to chmod file or directory at path \"" + remotePath + "\": " + err.Error())
 		return err

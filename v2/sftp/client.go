@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -70,7 +71,7 @@ func getRemoteClient() (*sftp.Client, error) {
 		clientConfig = hook.CreateClientConfig(clientConfig)
 	}
 
-	addr := fmt.Sprintf("%s:%d", Config.SshHost, Config.SshPort)
+	addr := net.JoinHostPort(Config.SshHost, strconv.Itoa(Config.SshPort))
 	LogDebug("Dialing " + addr + " with user " + Config.SshUsername)
 	conn, err := ssh.Dial("tcp", addr, clientConfig)
 	if err != nil {

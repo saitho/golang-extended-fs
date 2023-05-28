@@ -35,5 +35,8 @@ func (p ProtocolHandler) DeleteDirectory(directoryPath string, force bool) error
 func (p ProtocolHandler) HasDirectory(directoryPath string) (bool, error) {
 	localPath := p.ResolveFilePath(directoryPath)
 	info, err := os.Stat(localPath)
+	if err != nil && err.Error() == "file does not exist" {
+		return false, nil
+	}
 	return info != nil, err
 }

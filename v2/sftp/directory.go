@@ -110,5 +110,8 @@ func (p ProtocolHandler) HasDirectory(directoryPath string) (bool, error) {
 	}
 	defer client.Close()
 	info, err := client.Stat(remotePath)
+	if err != nil && err.Error() == "file does not exist" {
+		return false, nil
+	}
 	return info != nil, err
 }

@@ -48,5 +48,8 @@ func (p ProtocolHandler) DeleteFile(filePath string) error {
 func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
 	localPath := p.ResolveFilePath(filePath)
 	info, err := os.Stat(localPath)
+	if err.Error() == "file does not exist" {
+		return false, nil
+	}
 	return info != nil, err
 }

@@ -1,6 +1,9 @@
 package local
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func (p ProtocolHandler) WriteFile(filePath string, fileContent string) error {
 	localPath := p.ResolveFilePath(filePath)
@@ -50,6 +53,18 @@ func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
 	info, err := os.Stat(localPath)
 	if err != nil && err.Error() == "file does not exist" {
 		return false, nil
+	}
+	return info != nil, err
+}
+
+func (p ProtocolHandler) HasLink(filePath string) (bool, error) {
+	localPath := p.ResolveFilePath(filePath)
+	info, err := os.Lstat(localPath)
+	if err != nil && err.Error() == "link does not exist" {
+		return false, nil
+	}
+	if info.Mode()&os.ModeSymlink == 0 {
+		return false, fmt.Errorf("file found but it is a symlink")
 	}
 	return info != nil, err
 }

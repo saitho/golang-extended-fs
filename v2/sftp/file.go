@@ -109,6 +109,24 @@ func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
 	return file != nil, err
 }
 
+func (p ProtocolHandler) HasLink(filePath string) (bool, error) {
+	remotePath := p.ResolveFilePath(filePath)
+	client, err := getRemoteClient()
+	if err != nil {
+		return false, err
+	}
+	defer client.Close()
+	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "STAT "+remotePath))
+	file, err := client.Lstat(remotePath)
+	if err != nil && err.Error() == "file does not exist" {
+		return false, nil
+	}
+	if file.Mode()&os.ModeSymlink == 0 {
+		return false, fmt.Errorf("file found but it is a symlink")
+	}
+	return file != nil, err
+}
+
 func (p ProtocolHandler) DeleteFile(filePath string) error {
 	remotePath := p.ResolveFilePath(filePath)
 	client, err := getRemoteClient()

@@ -23,6 +23,7 @@ type HandlerFunc interface {
 	DeleteDirectory(directoryPath string, force bool) error
 
 	HasFile(filePath string) (bool, error)
+	HasLink(filePath string) (bool, error)
 	WriteFile(filePath string, fileContent string) error
 	DeleteFile(filePath string) error
 	AppendToFile(filePath string, fileContent string) error

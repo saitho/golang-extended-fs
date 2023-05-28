@@ -103,7 +103,7 @@ func (p ProtocolHandler) HasFile(filePath string) (bool, error) {
 	defer client.Close()
 	LogDebug(fmt.Sprintf("SFTP [%s@%s]: %s", Config.SshUsername, Config.SshHost, "STAT "+remotePath))
 	file, err := client.Stat(remotePath)
-	if err.Error() == "file does not exist" {
+	if err != nil && err.Error() == "file does not exist" {
 		return false, nil
 	}
 	return file != nil, err
